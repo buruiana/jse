@@ -4,10 +4,6 @@ import SortableTree, {
   getFlatDataFromTree,
 } from 'react-sortable-tree';
 import isEmpty from 'lodash/isEmpty';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import {
-  JSON_FORM_INFO,
-} from '../../modals/constants';
 
 const externalNodeType = 'yourNodeType';
 const shouldCopyOnOutsideDrop = true;
@@ -121,8 +117,8 @@ const JsonFormSettingsForm = props => {
           getNodeKey={getNodeKey}
           generateNodeProps={({ node, path }) => ({
             buttons: [
-              <Glyphicon glyph="remove-circle" onClick={() => remove(path)} />,
-              <Glyphicon glyph="adjust" onClick={() => showModal(JSON_FORM_INFO, node, path)} />
+              <a onClick={() => remove(path)}>remove</a>,
+              <a onClick={() => showModal(JSON_FORM_INFO, node, path)}>edit</a>
             ]
           })}
         />

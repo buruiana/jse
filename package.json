@@ -14,17 +14,18 @@
   "author": "M",
   "license": "ISC",
   "dependencies": {
-    "history": "^4.9.0",
     "lodash": "^4.17.11",
+    "parcel-bundler": "^1.12.3",
     "react": "^16.8.6",
-    "react-bootstrap": "^1.0.0-beta.6",
+    "react-bootstrap": "^1.0.0-beta.9",
     "react-dom": "^16.8.6",
     "react-jsonschema-form": "^1.3.0",
     "react-jsonschema-form-layout": "^1.0.4",
     "react-redux": "^7.1.0",
+    "react-sortable-tree": "^2.6.2",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
-    "redux-saga": "^1.0.2"
+    "redux-saga": "^1.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
