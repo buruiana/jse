@@ -1,9 +1,15 @@
 import React from 'react';
+
 import SortableTree, {
   removeNodeAtPath,
   getFlatDataFromTree,
 } from 'react-sortable-tree';
 import isEmpty from 'lodash/isEmpty';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faMinusCircle,
+  faArrowCircleRight
+} from "@fortawesome/free-solid-svg-icons";
 
 const externalNodeType = 'yourNodeType';
 const shouldCopyOnOutsideDrop = true;
@@ -32,15 +38,15 @@ const treeData = [
 ];
 
 const JsonFormSettingsForm = props => {
-  const { jsonForm } = props;
+  const { tree, currentNode, setTree, setCurrentNode } = props;
 
   const remove = path => {
     const newTree = removeNodeAtPath({
-      treeData: jsonForm,
+      treeData: tree,
       path,
       getNodeKey
     });
-    props.setProjectJsonForm(newTree);
+    setTree(newTree);
   };
 
   const validateJsonForm = jsonForm => {
@@ -59,32 +65,20 @@ const JsonFormSettingsForm = props => {
 
   const onChange = treeData => {
     if (isEmpty(validateJsonForm(treeData))) {
-      props.setProjectJsonForm(treeData);
+      setTree(treeData);
     }
   };
 
-  const showModal = (type, node, path) => {
-    props.setNodePath({
-      node,
-      path,
-      type,
-    });
-    const newEl = {
-      modalName: type,
-      modalVisible: true,
-      modalContent: { node, type },
-    };
-    props.setCurrentModal(type);
-    const newAllModals = [ ...props.allModals ];
-    newAllModals.push(newEl);
-    props.setAllModals(newAllModals);
+  const setCurrentForm = (node, path) => {
+    setCurrentNode({node, path});
   };
 
   const onChangeSchemaEditor = data => {
-    props.setProjectJsonForm(data);
+   setTree(data);
   };
 
   const log = (type) => console.log.bind(console, type);
+
   return (
     <div className='flex'>
       <div
@@ -110,15 +104,15 @@ const JsonFormSettingsForm = props => {
         }}
       >
         <SortableTree
-          treeData={props.jsonForm}
+          treeData={tree}
           onChange={onChange}
           dndType={externalNodeType}
           shouldCopyOnOutsideDrop={shouldCopyOnOutsideDrop}
           getNodeKey={getNodeKey}
           generateNodeProps={({ node, path }) => ({
             buttons: [
-              <a onClick={() => remove(path)}>remove</a>,
-              <a onClick={() => showModal(JSON_FORM_INFO, node, path)}>edit</a>
+              <FontAwesomeIcon icon={faMinusCircle} onClick={() => remove(path)} />,
+              <FontAwesomeIcon icon={faArrowCircleRight} onClick={() => setCurrentForm(node, path)} />
             ]
           })}
         />

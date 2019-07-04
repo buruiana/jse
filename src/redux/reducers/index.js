@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import counterReducer from "../../services/counterService/reducer";
+import mainReducer from "../../services/mainService/reducer";
 
 export default () =>
   combineReducers({
-    counterReducer
+    mainReducer
   });

@@ -1,6 +1,6 @@
 import { fork, all } from "redux-saga/effects";
-import counterSaga from "../../services/counterService";
+import mainSaga from "../../services/mainService";
 
 export default function* sagas() {
-  yield all([counterSaga].map(saga => fork(saga)));
+  yield all([mainSaga].map(saga => fork(saga)));
 }

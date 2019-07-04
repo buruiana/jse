@@ -13,7 +13,7 @@ const shouldCopyOnOutsideDrop = true;
 const getNodeKey = ({ treeIndex }) => treeIndex;
 
 const JsonFormUISettingsForm = props => {
-  const { jsonForm } = props;
+  const { tree } = props;
   const booleanWidgetEnum = ['radio', 'select', 'checkbox', 'hidden'];
   const stringWidgetEnum = ['textarea', 'password', 'color', 'text', 'hidden'];
   const integerWidgetEnum = ['updown', 'range', 'radio', 'hidden'];
@@ -185,7 +185,7 @@ const JsonFormUISettingsForm = props => {
     newNode.uiSchema = formData;
 
     const newTree = changeNodeAtPath({
-      treeData: jsonForm,
+      treeData: tree,
       path,
       getNodeKey,
       newNode
@@ -248,7 +248,7 @@ const JsonFormUISettingsForm = props => {
         }}
       >
         <SortableTree
-          treeData={jsonForm}
+          treeData={tree}
           onChange={onChange}
           dndType={externalNodeType}
           shouldCopyOnOutsideDrop={shouldCopyOnOutsideDrop}

@@ -1,15 +1,21 @@
 import * as actionTypes from './actionTypes';
 
 export const initialState = () => ({
-  counter: 0,
+  tree: [],
+  currentNode: [],
 });
 
 export default (state = initialState(), action) => {
   switch (action.type) {
-    case actionTypes.SET_COUNTER:
+    case actionTypes.SET_TREE:
       return {
         ...state,
-        counter: action.counter,
+        tree: action.tree,
+      };
+    case actionTypes.SET_CURRENT_NODE:
+      return {
+        ...state,
+        currentNode: action.currentNode,
       };
     default:
       return state;
