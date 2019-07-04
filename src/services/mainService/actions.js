@@ -1,12 +1,21 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from "./actionTypes";
 
 export const setTree = tree => ({
   type: actionTypes.SET_TREE,
-  tree,
+  tree
 });
 
 export const setCurrentNode = currentNode => ({
   type: actionTypes.SET_CURRENT_NODE,
-  currentNode,
+  currentNode
 });
 
+export const setSchemaCode = schemaCode => ({
+  type: actionTypes.SET_SCHEMA_CODE,
+  schemaCode
+});
+
+export const setUISchemaCode = uiSchemaCode => ({
+  type: actionTypes.SET_UISCHEMA_CODE,
+  uiSchemaCode
+});

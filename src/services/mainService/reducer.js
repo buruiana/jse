@@ -1,8 +1,10 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from "./actionTypes";
 
 export const initialState = () => ({
   tree: [],
   currentNode: [],
+  schemaCode: "",
+  uiSchemaCode: ""
 });
 
 export default (state = initialState(), action) => {
@@ -10,12 +12,27 @@ export default (state = initialState(), action) => {
     case actionTypes.SET_TREE:
       return {
         ...state,
-        tree: action.tree,
+        tree: action.tree
       };
     case actionTypes.SET_CURRENT_NODE:
       return {
         ...state,
-        currentNode: action.currentNode,
+        currentNode: action.currentNode
+      };
+    case actionTypes.SET_SCHEMA_CODE:
+      return {
+        ...state,
+        schemaCode: action.schemaCode
+      };
+    case actionTypes.SET_UISCHEMA_CODE:
+      return {
+        ...state,
+        uiSchemaCode: action.uiSchemaCode
+      };
+    case actionTypes.SET_TREE:
+      return {
+        ...state,
+        tree: action.tree
       };
     default:
       return state;
