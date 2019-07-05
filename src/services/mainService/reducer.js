@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 export const initialState = () => ({
   tree: [],
   currentNode: [],
+  currentUINode: [],
   schemaCode: "",
   uiSchemaCode: ""
 });
@@ -18,6 +19,11 @@ export default (state = initialState(), action) => {
       return {
         ...state,
         currentNode: action.currentNode
+      };
+    case actionTypes.SET_CURRENT_UI_NODE:
+      return {
+        ...state,
+        currentUINode: action.currentUINode
       };
     case actionTypes.SET_SCHEMA_CODE:
       return {

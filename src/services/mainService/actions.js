@@ -10,6 +10,11 @@ export const setCurrentNode = currentNode => ({
   currentNode
 });
 
+export const setCurrentUINode = currentUINode => ({
+  type: actionTypes.SET_CURRENT_UI_NODE,
+  currentUINode
+});
+
 export const setSchemaCode = schemaCode => ({
   type: actionTypes.SET_SCHEMA_CODE,
   schemaCode

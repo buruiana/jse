@@ -1,29 +1,24 @@
 import JsonFormUISettingsForm from "./jsonFormUISettingsForm";
 import { connect } from "react-redux";
-// import { setProjectJsonForm } from '../../../services/projectSettingsService/actions';
-// import {
-//   setAllModals,
-//   setCurrentModal
-// } from '../../../services/modalService/actions';
-// import { setNodePath } from '../../../services/sortableTreeService/actions';
+import {
+  setTree,
+  setCurrentNode,
+  setCurrentUINode
+} from "../../../services/mainService/actions";
 
-// const mapStateToProps = state => {
-//   return {
-//     allModals: state.modalServiceReducer.allModals,
-//     currentModal: state.modalServiceReducer.currentModal,
-//     jsonForm: state.projectSettingsServiceReducer.jsonForm,
-//     nodePath: state.sortableTreeServiceReducer.nodePath,
-//   }
-// }
+const mapStateToProps = state => {
+  return {
+    tree: state.mainReducer.tree,
+    currentUINode: state.mainReducer.currentUINode
+  };
+};
 
-// const mapDispatchToProps = {
-//   setAllModals: content => setAllModals(content),
-//   setCurrentModal: currentModal => setCurrentModal(currentModal),
-//   setProjectJsonForm: jsonForm => setProjectJsonForm(jsonForm),
-//   setNodePath: nodePath => setNodePath(nodePath),
-// }
+const mapDispatchToProps = {
+  setTree,
+  setCurrentUINode
+};
 
 export default connect(
-  null,
-  null
+  mapStateToProps,
+  mapDispatchToProps
 )(JsonFormUISettingsForm);
