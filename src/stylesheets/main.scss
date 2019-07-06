@@ -53,3 +53,36 @@ select.form-control[size] {
   flex-direction: column;
   padding: 1rem;
 }
+
+.container__editor {
+  font-size: 12px;
+  font-variant-ligatures: common-ligatures;
+  background-color: #fafafa;
+  border-radius: 3px;
+  counter-reset: line;
+  min-height: 30rem;
+}
+
+.container_editor_line_number:before {
+  //position: absolute;
+  right: 100%;
+  margin-right: 10px;
+  text-align: right;
+  opacity: .3;
+  user-select: none;
+  counter-increment: line;
+  content: counter(line);
+}
+
+.container__editor textarea {
+  outline: 0;
+}
+
+// .container_editor_area {
+//   width: 50%;
+//   margin: 0 auto;
+// }
+
+.flex {
+  display: flex;
+}

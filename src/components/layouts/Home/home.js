@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "react-sortable-tree/style.css";
 import isEmpty from "lodash/isEmpty";
+import Nav from "react-bootstrap/Nav";
 import JsonFormSettingsForm from "../JsonFormSettingsForm";
 import JsonFormInfoForm from "../JsonFormInfoForm";
 import JsonFormUISettingsForm from "../JsonFormUISettingsForm";
@@ -8,14 +9,29 @@ import "../../../stylesheets/main.scss";
 
 const Home = props => {
   const { currentNode } = props;
-  console.log("console: currentNode", currentNode);
+  const [view, setView] = useState('schema');
+
   const renderView = () =>
     isEmpty(currentNode) ? <JsonFormSettingsForm /> : <JsonFormInfoForm />;
+
+  const mainRender = () => {
+    return view === 'schema'
+      ? renderView()
+      : <JsonFormUISettingsForm />
+  };
   return (
-    <div>
-      <div className="infoform">{renderView()}</div>
+    <div className="infoform">
+      <Nav fill variant="tabs" defaultActiveKey="schema">
+        <Nav.Item>
+          <Nav.Link eventKey="schema" onClick={() => setView('schema')}>Schema</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="uiachema" onClick={() => setView('uischema')}>UI Schema</Nav.Link>
+        </Nav.Item>
+      </Nav>
+
       <div>
-        <JsonFormUISettingsForm />
+        {mainRender()}
       </div>
     </div>
   );

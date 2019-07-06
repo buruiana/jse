@@ -8,6 +8,7 @@ import {
 const mapStateToProps = state => ({
   tree: state.mainReducer.tree,
   currentNode: state.mainReducer.currentNode,
+  schemaCode: state.mainReducer.schemaCode,
 });
 
 const mapDispatchToProps = {

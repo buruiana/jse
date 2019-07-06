@@ -1,11 +1,16 @@
 import React from "react";
 import SortableTree, { changeNodeAtPath } from "react-sortable-tree";
 import isEqual from "lodash/isEqual";
-import isEmpty from "lodash/isEmpty";
 import get from "lodash/get";
 import Form from "react-jsonschema-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  booleanWidgetEnum,
+  stringWidgetEnumDefault,
+  integerWidgetEnum,
+  html5InputTypesEnum,
+} from '../../../utils/constants';
 
 const externalNodeType = "yourNodeType";
 const shouldCopyOnOutsideDrop = true;
@@ -13,35 +18,17 @@ const getNodeKey = ({ treeIndex }) => treeIndex;
 
 const JsonFormUISettingsForm = props => {
   const { tree, setTree, currentUINode, setCurrentUINode } = props;
-  const booleanWidgetEnum = ["radio", "select", "checkbox", "hidden"];
-  const stringWidgetEnum = ["textarea", "password", "color", "text", "hidden"];
-  const integerWidgetEnum = ["updown", "range", "radio", "hidden"];
-  const html5InputTypesEnum = [
-    "text",
-    "password",
-    "submit",
-    "reset",
-    "radio",
-    "checkbox",
-    "button",
-    "color",
-    "date",
-    "datetime-local",
-    "email",
-    "month",
-    "number",
-    "range",
-    "search",
-    "tel",
-    "time",
-    "url",
-    "week",
-    "hidden"
-  ];
+  let stringWidgetEnum = stringWidgetEnumDefault;
 
   const { node, path } = currentUINode;
+  const currentType = get(currentUINode, "node.type", "");
+
+  if (currentType === "string") {
+    stringWidgetEnum = stringWidgetEnum.filter(e => e !== 'file');
+    stringWidgetEnum.push("file");
+  }
+
   const getWidgetEnum = () => {
-    const currentType = get(currentUINode, "node.type", "");
     switch (currentType) {
       case "string":
         return stringWidgetEnum;
@@ -67,7 +54,7 @@ const JsonFormUISettingsForm = props => {
             type: "string",
             title: "ui:widget",
             enum: getWidgetEnum(),
-            default: get(currentUiSchema, "uiWidget.widget", "")
+            //default: get(currentUiSchema, "uiWidget.widget", "")
           }
         }
       },
@@ -89,7 +76,7 @@ const JsonFormUISettingsForm = props => {
             type: "string",
             title: "inputType",
             enum: html5InputTypesEnum,
-            default: get(currentUiSchema, "uiOptions.inputType", "text")
+            //default: get(currentUiSchema, "uiOptions.inputType", "text")
           },
           backgroundColor: {
             type: "string",
@@ -166,29 +153,26 @@ const JsonFormUISettingsForm = props => {
 
   const uiSchema = {
     uiWidget: {
-      widget: { "ui:placeholder": "Choose a type" }
+      widget: {
+        "ui:placeholder": "Choose a type"
+      }
     },
     uiOptions: {
-      inputType: { "ui:placeholder": "Choose a type" }
+      "ui:placeholder": "Choose a type"
     },
     uiOthers: {
       "ui:options": { backgroundColor: "gray" },
-      uiPlaceholder: { "ui:placeholder": "Choose a aaa" }
+      uiPlaceholder: { "ui:placeholder": "Choose" }
     }
   };
 
-  const type = get(node, "type", "");
-
-  if (type === "string") {
-    stringWidgetEnum.push("file");
-  }
-  if (type === "object") {
+  if (currentType === "object") {
     schema.properties.uiOptions.properties = {
       ...schema.properties.uiOptions.properties,
       expandable: { type: "boolean", title: "expandable" }
     };
   }
-  if (type === "array") {
+  if (currentType === "array") {
     schema.properties.uiOptions.properties = {
       ...schema.properties.uiOptions.properties,
       orderable: { type: "boolean", title: "orderable" },
@@ -203,8 +187,11 @@ const JsonFormUISettingsForm = props => {
 
   const onSubmit = data => {
     const { formData } = data;
+
     const newNode = { ...node };
     newNode.uiSchema = formData;
+
+    console.log('console: newNodenewNode', newNode);
 
     const newTree = changeNodeAtPath({
       treeData: tree,
@@ -214,6 +201,7 @@ const JsonFormUISettingsForm = props => {
     });
 
     setTree(newTree);
+    setCurrentUINode({});
   };
 
   const showForm = () => {
@@ -225,6 +213,7 @@ const JsonFormUISettingsForm = props => {
         onSubmit={onSubmit}
         onError={log("errors")}
         formData={currentUiSchema}
+        showErrorList={true}
       />
     );
   };
@@ -239,7 +228,7 @@ const JsonFormUISettingsForm = props => {
     return [
       <FontAwesomeIcon
         icon={faPlusCircle}
-        onClick={() => setCurrentUINode(node, path)}
+        onClick={() => setCurrentUINode({ node, path })}
         className={getButtonClass(path)}
       />
     ];
@@ -272,7 +261,7 @@ const JsonFormUISettingsForm = props => {
           float: "left"
         }}
       >
-        {showForm()}
+        {currentType && showForm()}
       </div>
     </div>
   );
