@@ -11,11 +11,6 @@ import {
   faArrowCircleRight
 } from "@fortawesome/free-solid-svg-icons";
 
-import Editor from "react-simple-code-editor";
-import { highlight, languages } from "prismjs/components/prism-core";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-
 import { defaultTree } from "../../../utils/constants";
 
 const externalNodeType = "yourNodeType";
@@ -23,7 +18,7 @@ const shouldCopyOnOutsideDrop = true;
 const getNodeKey = ({ treeIndex }) => treeIndex;
 
 const JsonFormSettingsForm = props => {
-  const { tree, schemaCode, setTree, setCurrentNode } = props;
+  const { tree, schemaCode, setTree, setCurrentNode, uiSchemaCode } = props;
 
   const remove = path => {
     const newTree = removeNodeAtPath({
@@ -40,7 +35,7 @@ const JsonFormSettingsForm = props => {
       getNodeKey: ({ treeIndex }) => treeIndex,
       ignoreCollapsed: false
     });
-    console.log("console: flatData", flatData);
+
     return flatData.find(el => {
       const isPrimitive =
         el.node.subtitle === "String" ||
@@ -116,23 +111,6 @@ const JsonFormSettingsForm = props => {
             })}
           />
         </div>
-      </div>
-      <div className="container_editor_area">
-        <Editor
-          value={JSON.stringify(schemaCode, null, 2)}
-          onValueChange={onValueChange}
-          highlight={code =>
-            highlight(code, languages.js)
-              .split("\n")
-              .map(
-                line =>
-                  `<span class="container_editor_line_number">${line}</span>`
-              )
-              .join("\n")
-          }
-          padding={10}
-          className="container__editor"
-        />
       </div>
     </>
   );

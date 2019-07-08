@@ -26,7 +26,7 @@ export const defaultTree = [
 ];
 
 export const booleanWidgetEnum = ["radio", "select", "checkbox", "hidden"];
-export const stringWidgetEnumDefault = ["textarea", "password", "color", "text", "hidden"];
+export const stringWidgetEnumDefault = ["color", "password","text", "textarea", "hidden"];
 export const integerWidgetEnum = ["updown", "range", "radio", "hidden"];
 export const html5InputTypesEnum = [
   "text",

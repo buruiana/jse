@@ -63,29 +63,7 @@ const JsonFormUISettingsForm = props => {
       uiOptions: {
         type: "object",
         title: "ui:options",
-        properties: {
-          label: {
-            type: "boolean",
-            title: "hasLabel",
-            default: get(currentUiSchema, "uiOptions.label", true)
-          },
-          classNames: {
-            type: "string",
-            title: "classNames",
-            default: get(currentUiSchema, "uiOptions.classNames", "")
-          },
-          inputType: {
-            type: "string",
-            title: "inputType",
-            enum: html5InputTypesEnum
-            //default: get(currentUiSchema, "uiOptions.inputType", "text")
-          },
-          backgroundColor: {
-            type: "string",
-            title: "backgroundColor",
-            default: get(currentUiSchema, "uiOptions.backgroundColor", "")
-          }
-        }
+        properties: {}
       },
       uiMore: {
         type: "object",
@@ -153,6 +131,15 @@ const JsonFormUISettingsForm = props => {
             properties: {
               uiWidget: {
                 properties: {
+                  widget: { enum: ["color"] }
+                }
+              }
+            }
+          },
+          {
+            properties: {
+              uiWidget: {
+                properties: {
                   widget: { enum: ["textarea"] }
                 }
               },
@@ -167,36 +154,6 @@ const JsonFormUISettingsForm = props => {
               }
             }
           }
-          // {
-          //   properties: {
-          //     uiWidget: {
-          //       properties: {
-          //         widget: { parentType: "object" }
-          //       }
-          //     },
-          //     uiOptions: {
-          //       properties: {
-          //         expandable: { type: "boolean", title: "expandable" }
-          //       }
-          //     }
-          //   }
-          // },
-          // {
-          //   properties: {
-          //     uiWidget: {
-          //       properties: {
-          //         widget: { parentType: "array" }
-          //       }
-          //     },
-          //     uiOptions: {
-          //       properties: {
-          //         orderable: { type: "boolean", title: "orderable" },
-          //         addable: { type: "boolean", title: "addable" },
-          //         removable: { type: "boolean", title: "removable" }
-          //       }
-          //     }
-          //   }
-          // },
         ]
       }
     }
@@ -217,30 +174,72 @@ const JsonFormUISettingsForm = props => {
     }
   };
 
-  // if (currentType === "object") {
-  //   schema.properties.uiOptions.properties = {
-  //     ...schema.properties.uiOptions.properties,
-  //     expandable: { type: "boolean", title: "expandable" }
-  //   };
-  // }
-  // if (currentType === "array") {
-  //   schema.properties.uiOptions.properties = {
-  //     ...schema.properties.uiOptions.properties,
-  //     orderable: { type: "boolean", title: "orderable" },
-  //     addable: { type: "boolean", title: "addable" },
-  //     removable: { type: "boolean", title: "removable" }
-  //   };
-  // }
-  if (currentWidget === "textarea") {
+  if (currentType === "object") {
     schema.properties.uiOptions.properties = {
       ...schema.properties.uiOptions.properties,
-      rows: {
-        type: "integer",
-        title: "rows",
-        default: get(currentUiSchema, "uiOptions.rows", 10)
+      expandable: { type: "boolean", title: "expandable" }
+    };
+
+    schema.properties = {
+      ...schema.properties,
+      uiWidget: {},
+      uiOthers: {},
+      uiMore: {}
+    };
+  }
+  if (currentType === "array") {
+    schema.properties.uiOptions.properties = {
+      ...schema.properties.uiOptions.properties,
+      orderable: { type: "boolean", title: "orderable" },
+      addable: { type: "boolean", title: "addable" },
+      removable: { type: "boolean", title: "removable" }
+    };
+    schema.properties = {
+      ...schema.properties,
+      uiWidget: {},
+      uiOthers: {},
+      uiMore: {}
+    };
+  }
+
+  if (currentType !== "array" && currentType !== "object") {
+    schema.properties.uiOptions.properties = {
+      ...schema.properties.uiOptions.properties,
+      label: {
+        type: "boolean",
+        title: "hasLabel",
+        default: get(currentUiSchema, "uiOptions.label", true)
+      },
+      classNames: {
+        type: "string",
+        title: "classNames",
+        default: get(currentUiSchema, "uiOptions.classNames", "")
+      },
+      inputType: {
+        type: "string",
+        title: "inputType",
+        enum: html5InputTypesEnum
+        //default: get(currentUiSchema, "uiOptions.inputType", "text")
+      },
+      backgroundColor: {
+        type: "string",
+        title: "backgroundColor",
+        default: get(currentUiSchema, "uiOptions.backgroundColor", "")
       }
     };
   }
+
+
+  // if (currentWidget === "textarea") {
+  //   schema.properties.uiOptions.properties = {
+  //     ...schema.properties.uiOptions.properties,
+  //     rows: {
+  //       type: "integer",
+  //       title: "rows",
+  //       default: get(currentUiSchema, "uiOptions.rows", 10)
+  //     }
+  //   };
+  // }
 
   const onChange = data => {
     console.log("JsonFormUISettingsForm changed", data, schema);
@@ -251,8 +250,6 @@ const JsonFormUISettingsForm = props => {
 
     const newNode = { ...node };
     newNode.uiSchema = formData;
-
-    console.log("console: newNodenewNode", newNode);
 
     const newTree = changeNodeAtPath({
       treeData: tree,
@@ -284,8 +281,6 @@ const JsonFormUISettingsForm = props => {
   };
 
   const getButton = (node, path) => {
-    // if ((node.type === "object" || node.type === "array") && path[0] === 0)
-    //   return [];
     return [
       <FontAwesomeIcon
         icon={faPlusCircle}

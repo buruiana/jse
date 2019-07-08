@@ -11,7 +11,7 @@ export const generateJsonSchemaCode = props => {
     ignoreCollapsed: false
   });
 
-  if (!isEmpty(tree) && tree[0].title) code += `export default schema = {\n`;
+  if (!isEmpty(tree) && tree[0].title) code += `return {\n`;
 
   const prepareJsonFormCode = jsonForm => {
     jsonForm.map(el => {

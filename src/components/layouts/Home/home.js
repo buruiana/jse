@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import "react-sortable-tree/style.css";
+
 import isEmpty from "lodash/isEmpty";
 import Nav from "react-bootstrap/Nav";
 import JsonFormSettingsForm from "../JsonFormSettingsForm";
 import JsonFormInfoForm from "../JsonFormInfoForm";
 import JsonFormUISettingsForm from "../JsonFormUISettingsForm";
+import Preview from "../Preview";
 import "../../../stylesheets/main.scss";
 
 const Home = props => {
@@ -17,7 +18,9 @@ const Home = props => {
   const mainRender = () => {
     return view === 'schema'
       ? renderView()
-      : <JsonFormUISettingsForm />
+      : view === 'preview'
+        ? <Preview />
+        : <JsonFormUISettingsForm />
   };
   return (
     <div className="infoform">
@@ -27,6 +30,9 @@ const Home = props => {
         </Nav.Item>
         <Nav.Item>
           <Nav.Link eventKey="uiachema" onClick={() => setView('uischema')}>UI Schema</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="preview" onClick={() => setView('preview')}>Preview</Nav.Link>
         </Nav.Item>
       </Nav>
 
