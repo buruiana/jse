@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "react-sortable-tree/style.css";
 import isEmpty from "lodash/isEmpty";
 import Nav from "react-bootstrap/Nav";
 import JsonFormSettingsForm from "../JsonFormSettingsForm";

@@ -15,7 +15,7 @@ const Preview = props => {
   const { schemaCode, uiSchemaCode } = props;
   const onChange = () => { return null };
   const onSubmit = () => { return null };
-  const code = new Function(schemaCode)();
+  const code = new Function(schemaCode)() || {};
   const onValueChange = () => { return null };
 
   return (
@@ -26,7 +26,9 @@ const Preview = props => {
         onChange={onChange}
         onSubmit={onSubmit}
         showErrorList={true}
-      />
+      >
+        <button type="submit" className="hidden">Submit</button>
+      </Form>
       <div className="container_editor_area">
         <Editor
           value={JSON.stringify(schemaCode, null, 2)}
