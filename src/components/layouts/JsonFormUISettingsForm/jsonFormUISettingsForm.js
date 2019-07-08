@@ -9,8 +9,8 @@ import {
   booleanWidgetEnum,
   stringWidgetEnumDefault,
   integerWidgetEnum,
-  html5InputTypesEnum,
-} from '../../../utils/constants';
+  html5InputTypesEnum
+} from "../../../utils/constants";
 
 const externalNodeType = "yourNodeType";
 const shouldCopyOnOutsideDrop = true;
@@ -22,9 +22,10 @@ const JsonFormUISettingsForm = props => {
 
   const { node, path } = currentUINode;
   const currentType = get(currentUINode, "node.type", "");
+  const currentWidget = get(currentUINode, "node.uiSchema.uiWidget.widget", "");
 
   if (currentType === "string") {
-    stringWidgetEnum = stringWidgetEnum.filter(e => e !== 'file');
+    stringWidgetEnum = stringWidgetEnum.filter(e => e !== "file");
     stringWidgetEnum.push("file");
   }
 
@@ -53,7 +54,7 @@ const JsonFormUISettingsForm = props => {
           widget: {
             type: "string",
             title: "ui:widget",
-            enum: getWidgetEnum(),
+            enum: getWidgetEnum()
             //default: get(currentUiSchema, "uiWidget.widget", "")
           }
         }
@@ -75,19 +76,19 @@ const JsonFormUISettingsForm = props => {
           inputType: {
             type: "string",
             title: "inputType",
-            enum: html5InputTypesEnum,
+            enum: html5InputTypesEnum
             //default: get(currentUiSchema, "uiOptions.inputType", "text")
           },
           backgroundColor: {
             type: "string",
             title: "backgroundColor",
             default: get(currentUiSchema, "uiOptions.backgroundColor", "")
-          },
-          rows: {
-            type: "integer",
-            title: "rows",
-            default: get(currentUiSchema, "uiOptions.rows", 10)
           }
+          // rows: {
+          //   type: "integer",
+          //   title: "rows",
+          //   default: get(currentUiSchema, "uiOptions.rows", 10)
+          // }
         }
       },
       uiMore: {
@@ -148,6 +149,30 @@ const JsonFormUISettingsForm = props => {
           }
         }
       }
+    },
+    dependencies: {
+      uiWidget: {
+        oneOf: [
+          {
+            properties: {
+              uiWidget: {
+                properties: {
+                  widget: { enum: ["textarea"] }
+                }
+              },
+              uiOptions: {
+                properties: {
+                  rows: {
+                    type: "integer",
+                    title: "rows",
+                    default: get(currentUiSchema, "uiOptions.rows", 10)
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
     }
   };
 
@@ -166,23 +191,33 @@ const JsonFormUISettingsForm = props => {
     }
   };
 
-  if (currentType === "object") {
+  // if (currentType === "object") {
+  //   schema.properties.uiOptions.properties = {
+  //     ...schema.properties.uiOptions.properties,
+  //     expandable: { type: "boolean", title: "expandable" }
+  //   };
+  // }
+  // if (currentType === "array") {
+  //   schema.properties.uiOptions.properties = {
+  //     ...schema.properties.uiOptions.properties,
+  //     orderable: { type: "boolean", title: "orderable" },
+  //     addable: { type: "boolean", title: "addable" },
+  //     removable: { type: "boolean", title: "removable" }
+  //   };
+  // }
+  if (currentWidget === "textarea") {
     schema.properties.uiOptions.properties = {
       ...schema.properties.uiOptions.properties,
-      expandable: { type: "boolean", title: "expandable" }
-    };
-  }
-  if (currentType === "array") {
-    schema.properties.uiOptions.properties = {
-      ...schema.properties.uiOptions.properties,
-      orderable: { type: "boolean", title: "orderable" },
-      addable: { type: "boolean", title: "addable" },
-      removable: { type: "boolean", title: "removable" }
+      rows: {
+        type: "integer",
+        title: "rows",
+        default: get(currentUiSchema, "uiOptions.rows", 10)
+      }
     };
   }
 
   const onChange = data => {
-    console.log("JsonFormUISettingsForm changed", data);
+    console.log("JsonFormUISettingsForm changed", data, schema);
   };
 
   const onSubmit = data => {

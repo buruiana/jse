@@ -3,9 +3,7 @@ import Form from "react-jsonschema-form";
 import { changeNodeAtPath } from "react-sortable-tree";
 import isEmpty from "lodash/isEmpty";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faWindowClose
-} from "@fortawesome/free-solid-svg-icons";
+import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 
 const JsonFormInfoForm = props => {
   const { tree, setTree, currentNode, setCurrentNode } = props;
@@ -276,7 +274,7 @@ const JsonFormInfoForm = props => {
         className="componentInfoIcon"
         icon={faWindowClose}
         onClick={close}
-      />,
+      />
       <Form
         schema={schema}
         noHtml5Validate={true}
