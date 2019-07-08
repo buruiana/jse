@@ -54,7 +54,8 @@ const JsonFormUISettingsForm = props => {
           widget: {
             type: "string",
             title: "ui:widget",
-            enum: getWidgetEnum()
+            enum: getWidgetEnum(),
+            parentType: currentType
             //default: get(currentUiSchema, "uiWidget.widget", "")
           }
         }
@@ -84,11 +85,6 @@ const JsonFormUISettingsForm = props => {
             title: "backgroundColor",
             default: get(currentUiSchema, "uiOptions.backgroundColor", "")
           }
-          // rows: {
-          //   type: "integer",
-          //   title: "rows",
-          //   default: get(currentUiSchema, "uiOptions.rows", 10)
-          // }
         }
       },
       uiMore: {
@@ -171,6 +167,36 @@ const JsonFormUISettingsForm = props => {
               }
             }
           }
+          // {
+          //   properties: {
+          //     uiWidget: {
+          //       properties: {
+          //         widget: { parentType: "object" }
+          //       }
+          //     },
+          //     uiOptions: {
+          //       properties: {
+          //         expandable: { type: "boolean", title: "expandable" }
+          //       }
+          //     }
+          //   }
+          // },
+          // {
+          //   properties: {
+          //     uiWidget: {
+          //       properties: {
+          //         widget: { parentType: "array" }
+          //       }
+          //     },
+          //     uiOptions: {
+          //       properties: {
+          //         orderable: { type: "boolean", title: "orderable" },
+          //         addable: { type: "boolean", title: "addable" },
+          //         removable: { type: "boolean", title: "removable" }
+          //       }
+          //     }
+          //   }
+          // },
         ]
       }
     }
@@ -226,7 +252,7 @@ const JsonFormUISettingsForm = props => {
     const newNode = { ...node };
     newNode.uiSchema = formData;
 
-    console.log('console: newNodenewNode', newNode);
+    console.log("console: newNodenewNode", newNode);
 
     const newTree = changeNodeAtPath({
       treeData: tree,
@@ -258,8 +284,8 @@ const JsonFormUISettingsForm = props => {
   };
 
   const getButton = (node, path) => {
-    if ((node.type === "object" || node.type === "array") && path[0] === 0)
-      return [];
+    // if ((node.type === "object" || node.type === "array") && path[0] === 0)
+    //   return [];
     return [
       <FontAwesomeIcon
         icon={faPlusCircle}

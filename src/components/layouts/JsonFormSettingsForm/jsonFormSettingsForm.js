@@ -4,7 +4,6 @@ import SortableTree, {
   removeNodeAtPath,
   getFlatDataFromTree
 } from "react-sortable-tree";
-import JSONPretty from 'react-json-pretty';
 import isEmpty from "lodash/isEmpty";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -69,7 +68,7 @@ const JsonFormSettingsForm = props => {
 
   const log = type => console.log.bind(console, type);
   const onValueChange = () => {
-    console.log('console: -----------', );
+    console.log("console: -----------");
   };
 
   return (
@@ -118,18 +117,18 @@ const JsonFormSettingsForm = props => {
           />
         </div>
       </div>
-      <JSONPretty id="json-pretty" data={schemaCode}></JSONPretty>
       <div className="container_editor_area">
         <Editor
           value={JSON.stringify(schemaCode, null, 2)}
           onValueChange={onValueChange}
-          highlight={code => highlight(code, languages.js)
-            .split('\n')
-            .map(
-              line =>
-                `<span class="container_editor_line_number">${line}</span>`
-            )
-            .join('\n')
+          highlight={code =>
+            highlight(code, languages.js)
+              .split("\n")
+              .map(
+                line =>
+                  `<span class="container_editor_line_number">${line}</span>`
+              )
+              .join("\n")
           }
           padding={10}
           className="container__editor"
