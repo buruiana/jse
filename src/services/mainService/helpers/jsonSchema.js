@@ -11,7 +11,7 @@ export const generateJsonSchemaCode = props => {
     ignoreCollapsed: false
   });
 
-  if (!isEmpty(tree) && tree[0].title) code += `return {\n`;
+  if (!isEmpty(tree) && tree[0].title) code += `return {`;
 
   const prepareJsonFormCode = jsonForm => {
     jsonForm.map(el => {
@@ -29,53 +29,56 @@ export const generateJsonSchemaCode = props => {
         }
 
         if (!isEmpty(parent)) {
-          isChild = !isEmpty(parent.children);
+          isChild = !isEmpty(parent);
           isLastChild = isChild
             ? parent.children[parent.children.length - 1].title === el.title
             : false;
         }
 
-        if (isChild) {
-          if (!isEmpty(el.title))
-            code += `${el.title}: { title: '${el.title}',`;
-        } else {
-          if (!isEmpty(el.title)) code += `title: '${el.title}',`;
+        if (isChild && el.type !== "array" && el.type !== "object") {
+          if (!isEmpty(el.title)) code += `{title: '${el.title}',`;
         }
 
         if (!isEmpty(el.description))
-          code += `description: '${el.description}',\n`;
-        if (!isEmpty(el.type)) code += `type: '${el.type}',\n`;
-        if (el.type === "array") code += `items: {\n`;
-        if (el.type === "object") code += `properties: {\n`;
+          code += `description: '${el.description}',`;
+        if (!isEmpty(el.type)) code += `type: '${el.type}',`;
+        if (el.type === "array") code += `items: [`;
+        if (el.type === "object") code += `properties: `;
 
         if (!isEmpty(el.children)) prepareJsonFormCode(el.children);
 
-        if (!isEmpty(el.minimum)) code += `minimum: ${el.minimum},\n`;
-        if (!isEmpty(el.maximum)) code += `maximum: ${el.maximum},\n`;
-        if (!isEmpty(el.minLength)) code += `minLength: ${el.minLength},\n`;
-        if (!isEmpty(el.maxLength)) code += `maxLength: ${el.maxLength},\n`;
-        if (!isEmpty(el.minItems)) code += `minItems: ${el.minItems},\n`;
-        if (!isEmpty(el.maxItems)) code += `maxItems: ${el.maxItems},\n`;
-        if (!isEmpty(el.isRequired)) code += `isRequired: ${el.isRequired},\n`;
-        if (!isEmpty(el.uniqueItems))
-          code += `uniqueItems: ${el.uniqueItems},\n`;
-        if (!isEmpty(el.multipleOf)) code += `multipleOf: ${el.multipleOf},\n`;
-        if (!isEmpty(el.enumVal)) code += `enum: ${el.enumVal},\n`;
-        if (!isEmpty(el.enumNames)) code += `enumNames: ${el.enumNames},\n`;
+        if (!isEmpty(el.minimum)) code += `minimum: ${el.minimum},`;
+        if (!isEmpty(el.maximum)) code += `maximum: ${el.maximum},`;
+        if (!isEmpty(el.minLength)) code += `minLength: ${el.minLength},`;
+        if (!isEmpty(el.maxLength)) code += `maxLength: ${el.maxLength},`;
+        if (!isEmpty(el.minItems)) code += `minItems: ${el.minItems},`;
+        if (!isEmpty(el.maxItems)) code += `maxItems: ${el.maxItems},`;
+        if (!isEmpty(el.isRequired)) code += `isRequired: ${el.isRequired},`;
+        if (!isEmpty(el.uniqueItems)) code += `uniqueItems: ${el.uniqueItems},`;
+        if (!isEmpty(el.multipleOf)) code += `multipleOf: ${el.multipleOf},`;
+        if (!isEmpty(el.enumVal)) code += `enum: ${el.enumVal},`;
+        if (!isEmpty(el.enumNames)) code += `enumNames: ${el.enumNames},`;
 
-        if (
-          !isEmpty(parent) &&
-          (parent.type === "array" || parent.type === "object") &&
-          el.title
-        )
-          code += `},\n`;
-        if (
-          (el.type === "array" || el.type === "object") &&
-          isEmpty(el.children)
-        )
-          code += `},\n`;
-        if (!isEmpty(parent) && isLastChild) code += `},\n`;
-        if (isEmpty(parent)) code += `};\n`;
+        // if (
+        //   !isEmpty(parent) &&
+        //   (parent.type === "array" || parent.type === "object") &&
+        //   el.title
+        // )
+        //   code += `},`;
+
+        if (!isEmpty(parent)) code += `},`;
+
+        if (el.type === "array" && el.title) {
+          code += `]`;
+        }
+
+        // if (
+        //   (el.type === "array" || el.type === "object") &&
+        //   isEmpty(el.children)
+        // )
+        //   code += `}`;
+
+        if (isEmpty(parent)) code += `}`;
       }
     });
 

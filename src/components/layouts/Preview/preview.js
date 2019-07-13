@@ -13,22 +13,30 @@ import "prismjs/components/prism-javascript";
 
 const Preview = props => {
   const { schemaCode, uiSchemaCode } = props;
-  const onChange = () => { return null };
-  const onSubmit = () => { return null };
-  const code = new Function(schemaCode)() || {};
-  const onValueChange = () => { return null };
+  const onChange = () => {
+    return null;
+  };
+  const onSubmit = () => {
+    return null;
+  };
+  //const code = new Function(schemaCode)() || {};
+  const onValueChange = () => {
+    return null;
+  };
 
   return (
     <>
-      <Form
+      {/* <Form
         schema={code}
         //uiSchema={uiSchemaCode}
         onChange={onChange}
         onSubmit={onSubmit}
         showErrorList={true}
       >
-        <button type="submit" className="hidden">Submit</button>
-      </Form>
+        <button type="submit" className="hidden">
+          Submit
+        </button>
+      </Form> */}
       <div className="container_editor_area">
         <Editor
           value={JSON.stringify(schemaCode, null, 2)}
@@ -68,5 +76,3 @@ const Preview = props => {
 };
 
 export default Preview;
-
-
