@@ -6,10 +6,9 @@ import {
   faMinusCircle,
   faArrowCircleRight
 } from "@fortawesome/free-solid-svg-icons";
-import Editor from "react-simple-code-editor";
-import { highlight, languages } from "prismjs/components/prism-core";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
+import AceEditor from "react-ace";
+import "brace/mode/jsx";
+import "brace/theme/xcode";
 
 const Preview = props => {
   const { schemaCode, uiSchemaCode } = props;
@@ -27,7 +26,7 @@ const Preview = props => {
   return (
     <>
       {/* <Form
-        schema={code}
+        schema={JSON.parse(schemaCode)}
         //uiSchema={uiSchemaCode}
         onChange={onChange}
         onSubmit={onSubmit}
@@ -38,37 +37,25 @@ const Preview = props => {
         </button>
       </Form> */}
       <div className="container_editor_area">
-        <Editor
-          value={JSON.stringify(schemaCode, null, 2)}
-          onValueChange={onValueChange}
-          highlight={code =>
-            highlight(code, languages.js)
-              .split("\n")
-              .map(
-                line =>
-                  `<span class="container_editor_line_number">${line}</span>`
-              )
-              .join("\n")
-          }
-          padding={10}
-          className="container__editor"
-        />
-      </div>
-      <div className="container_editor_area">
-        <Editor
-          value={JSON.stringify(uiSchemaCode, null, 2)}
-          onValueChange={onValueChange}
-          highlight={code =>
-            highlight(code, languages.js)
-              .split("\n")
-              .map(
-                line =>
-                  `<span class="container_editor_line_number">${line}</span>`
-              )
-              .join("\n")
-          }
-          padding={10}
-          className="container__editor"
+        <AceEditor
+          mode="json"
+          theme="xcode"
+          onChange={onChange}
+          name="UNIQUE_ID_OF_DIV"
+          editorProps={{ $blockScrolling: true }}
+          setOptions={{
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            enableSnippets: false,
+            showLineNumbers: true,
+            tabSize: 2
+          }}
+          fontSize={12}
+          showPrintMargin={true}
+          showGutter={true}
+          highlightActiveLine={true}
+          value={schemaCode}
+          height="750px"
         />
       </div>
     </>

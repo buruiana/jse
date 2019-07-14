@@ -11,10 +11,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const server = http.createServer(app);
 
-function copyFiles(src, dest) {
-  shell.exec(`cp -r ${src} ${dest}`);
-}
-
 app.post("/api/prettify", (req, res) => {
   const opt = {
     useTabs: false,
@@ -25,16 +21,23 @@ app.post("/api/prettify", (req, res) => {
     bracketSpacing: false,
     jsxBracketSameLine: true,
     parser: `${req.body.parser}`,
-    trailingComma: "all",
+    trailingComma: "none",
     arrowParens: "avoid",
     proseWrap: "preserve"
   };
-  console.log("console: -----------------", req.body.code);
 
-  const xxx = prettier.format(req.body.code, opt);
-  console.log("console: xxxxx", xxx);
+  console.log('console: req.body.code', req.body.code);
+  console.log("console: xxxxx", prettier.format(req.body.code, opt));
+  let formattedCode = '';
+  try {
+    console.log('console: 111111111', );
+    formattedCode = prettier.format(req.body.code, opt);
+    console.log('console: 22222222', );
+  } catch (e) {
+    console.log('console: ===========', e);
+  }
 
-  res.json(xxx);
+  res.json(formattedCode);
 });
 
 app.post("/api/exportFiles", (req, res) => {
