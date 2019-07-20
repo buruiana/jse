@@ -25,7 +25,7 @@ const Preview = props => {
 
   return (
     <>
-      {/* <Form
+      <Form
         schema={JSON.parse(schemaCode)}
         //uiSchema={uiSchemaCode}
         onChange={onChange}
@@ -35,7 +35,7 @@ const Preview = props => {
         <button type="submit" className="hidden">
           Submit
         </button>
-      </Form> */}
+      </Form>
       <div className="container_editor_area">
         <AceEditor
           mode="json"

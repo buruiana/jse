@@ -17,11 +17,21 @@ export const defaultTree = [
   },
   {
     title: "",
-    subtitle: "Object"
+    subtitle: "Object",
+    expanded: true,
+    children: [{
+      title: "properties",
+      type: "object"
+    }]
   },
   {
     title: "",
-    subtitle: "Array"
+    subtitle: "Array",
+    expanded: true,
+    children: [{
+      title: "items",
+      type: "array"
+    }]
   }
 ];
 

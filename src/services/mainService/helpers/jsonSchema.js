@@ -18,6 +18,7 @@ export const generateJsonSchemaCode = props => {
       if (el.title) {
         let isChild = false;
         let isLastChild = false;
+        //let isFirstChild = false;
         let parent = null;
 
         const flatElement = flatData.find(element => element.node.title === el.title);
@@ -33,19 +34,35 @@ export const generateJsonSchemaCode = props => {
             : false;
         }
 
+        // if (!isEmpty(parent)) {
+        //   isChild = !isEmpty(parent.children);
+        //   isFirstChild = isChild
+        //     ? parent.children[0].title === el.title
+        //     : false;
+        // }
+
         if (isChild && parent.type === 'object') {
-          if (!isEmpty(el.title)) code += `"${el.title}": { title: '${el.title}',`;
-        } else {
-          if (!isEmpty(el.title)) code += `"title": '${el.title}',`;
+          if (!isEmpty(el.title)) code += `"${el.title}": {`;
         }
 
-        if (!isEmpty(el.description)) code += `"description": '${el.description}',`;
-        if (!isEmpty(el.type)) code += `"type": '${el.type}',`;
-        if (el.type === 'array') code += `"items": [{`;
-        if (el.type === 'object') code += `"properties": {`;
+        if (isChild && parent.type === 'array' && el.title === 'items') {
+          if (!isEmpty(el.title)) code += `"${el.title}": [`;
+        }
+
+        if (isChild && parent.type === 'array' && el.title !== 'items') {
+          if (!isEmpty(el.title)) code += `{`;
+        }
+
+        if (el.title !== 'properties' && el.title !== 'items') {
+          if (!isEmpty(el.title)) code += `"title": '${el.title}',`;
+
+          if (!isEmpty(el.description)) code += `"description": '${el.description}',`;
+          if (!isEmpty(el.type)) code += `"type": '${el.type}',`;
+        }
+
 
         if (!isEmpty(el.children)) prepareJsonFormCode(el.children);
-        if ((el.type === 'array')) code += `],`;
+
 
 
         if (!isEmpty(el.minimum)) code += `"minimum": ${el.minimum},`;
@@ -60,12 +77,24 @@ export const generateJsonSchemaCode = props => {
         if (!isEmpty(el.enumVal)) code += `"enum": ${el.enumVal},`;
         if (!isEmpty(el.enumNames)) code += `"enumNames": ${el.enumNames},`;
 
-        if (!isEmpty(parent) && (parent.type === 'array' || parent.type === 'object') && el.title) code += `},a`;
 
-        if (( el.type === 'array' || el.type === 'object')) code += `},b`;
+        if (isChild && parent.type === 'object' && isLastChild) {
+          if (!isEmpty(el.title)) code += `},`;
+        }
 
-        if (!isEmpty(parent) && isLastChild) code += `},c`;
-        if (isEmpty(parent)) code += `}d`;
+        if (isChild && parent.type === 'array' && el.title !== 'items') {
+          if (!isEmpty(el.title)) code += `},`;
+        }
+
+        if (isChild && parent.type === 'array' && isLastChild && el.title === 'items') {
+          if (!isEmpty(el.title)) code += `],`;
+        }
+
+        if (isChild && parent.type === 'object' && !isLastChild) {
+          if (!isEmpty(el.title)) code += `},`;
+        }
+
+        if (isEmpty(parent)) code += `}`;
       }
     });
 
