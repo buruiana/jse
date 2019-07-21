@@ -13,9 +13,9 @@ export const generateJsonUISchemaCode = props => {
     ignoreCollapsed: false
   });
 
-  if (!isEmpty(tree) && tree[0].title) code += `{\n`;
+  if (!isEmpty(tree) && tree[0].title) code += `{`;
 
-  const prepareJsonFormCode = jsonForm => {
+  const prepareJsonFormUICode = jsonForm => {
     jsonForm.map(el => {
       if (el.title) {
         let isChild,
@@ -28,12 +28,12 @@ export const generateJsonUISchemaCode = props => {
 
         const hasUiOptions =
           !isEmpty(uiSchema) &&
-          (uiSchema.uiMore.uiInline ||
+          (uiSchema.uiOptions.uiInline ||
             uiSchema.uiOptions.backgroundColor ||
             uiSchema.uiOptions.classNames ||
             uiSchema.uiOptions.inputType ||
             uiSchema.uiOptions.label ||
-            uiOptions.rows);
+            uiSchema.uiOptions.rows);
 
         if (!isEmpty(flatElement)) parent = flatElement.parentNode;
         if (!isEmpty(parent)) {
@@ -43,99 +43,103 @@ export const generateJsonUISchemaCode = props => {
             : false;
         }
 
-        if (!isEmpty(el.title)) code += `${el.title}: {`;
-        if (el.type === "array") code += `items: {\n`;
-        if (el.type === "object") code += `properties: {\n`;
+        if (isChild && parent.type === 'object' && el.title !== 'properties') {
+          if (!isEmpty(el.title)) code += `"${el.title}": {`;
+        }
 
-        if (!isEmpty(el.children)) prepareJsonFormCode(el.children);
+        if (isChild && parent.type === 'array' && el.title === 'items') {
+          if (!isEmpty(el.title)) code += `"${el.title}": [`;
+        }
+
+        if (isChild && parent.type === 'array' && el.title !== 'items') {
+          if (!isEmpty(el.title)) code += `{`;
+        }
+
+        if (!isEmpty(el.children)) prepareJsonFormUICode(el.children);
 
         if (has(uiSchema, "uiMore.uiDisabled") && uiSchema.uiMore.uiDisabled)
-          code += `"ui:disabled": true,\n`;
+          code += `"ui:disabled": true,`;
         if (
           has(uiSchema, "uiMore.uiEnumDisabled") &&
           uiSchema.uiMore.uiEnumDisabled
         )
-          code += `'ui:enumDisabled': '${uiSchema.uiMore.uiEnumDisabled}',\n`;
+          code += `"ui:enumDisabled": '${uiSchema.uiMore.uiEnumDisabled}',`;
         if (has(uiSchema, "uiMore.uiReadonly") && uiSchema.uiMore.uiReadonly)
-          code += `'ui:readonly': true,\n`;
+          code += `"ui:readonly": true,`;
 
         // uiOptions
-        if (hasUiOptions) code += `'ui:options': {\n`;
+        if (hasUiOptions) code += `"ui:options": {`;
 
-        if (has(uiSchema, "uiOptions.uiInline") && uiSchema.uiMore.uiInline)
-          code += `inline: ${uiSchema.uiMore.uiInline},\n`;
+        if (has(uiSchema, "uiOptions.uiInline"))
+          code += `"inline": ${uiSchema.uiMore.uiInline},`;
         if (
           has(uiSchema, "uiOptions.backgroundColor") &&
           uiSchema.uiOptions.backgroundColor
         )
-          code += `backgroundColor: '${uiSchema.uiOptions.backgroundColor}',\n`;
+          code += `"backgroundColor": '${uiSchema.uiOptions.backgroundColor}',`;
         if (
           has(uiSchema, "uiOptions.classNames") &&
           uiSchema.uiOptions.classNames
         )
-          code += `classNames: '${uiSchema.uiOptions.classNames}',\n`;
+          code += `"classNames": '${uiSchema.uiOptions.classNames}',`;
         if (
           has(uiSchema, "uiOptions.inputType") &&
           uiSchema.uiOptions.inputType
         )
-          code += `inputType: '${uiSchema.uiOptions.inputType}',\n`;
-        if (has(uiSchema, "uiOptions.label") && uiSchema.uiOptions.label)
-          code += `label: '${uiSchema.uiOptions.label}',\n`;
+          code += `"inputType": '${uiSchema.uiOptions.inputType}',`;
+        if (has(uiSchema, "uiOptions.label"))
+          code += `"label": ${uiSchema.uiOptions.label},`;
         if (has(uiSchema, "uiOptions.rows") && uiSchema.uiOptions.rows)
-          code += `rows: ${uiSchema.uiOptions.rows},\n`;
+          code += `"rows": ${uiSchema.uiOptions.rows},`;
 
-        if (hasUiOptions) code += `},\n`;
+        if (hasUiOptions) code += `},`;
 
         // other options
         if (
           has(uiSchema, "uiOthers.uiAutofocus") &&
           uiSchema.uiOthers.uiAutofocus
         )
-          code += `'ui:autofocus': ${uiSchema.uiOthers.uiAutofocus},\n`;
+          code += `"ui:autofocus": ${uiSchema.uiOthers.uiAutofocus},`;
         if (
           has(uiSchema, "uiOthers.uiDescription") &&
           uiSchema.uiOthers.uiDescription
         )
-          code += `'ui:description': '${uiSchema.uiOthers.uiDescription}',\n`;
+          code += `"ui:description": '${uiSchema.uiOthers.uiDescription}',`;
         if (has(uiSchema, "uiOthers.uiTitle") && uiSchema.uiOthers.uiTitle)
-          code += `'ui:title': '${uiSchema.uiOthers.uiTitle}',\n`;
+          code += `'ui:title': "${uiSchema.uiOthers.uiTitle}",`;
         if (has(uiSchema, "uiOthers.uiHelp") && uiSchema.uiOthers.uiHelp)
-          code += `'ui:help': '${uiSchema.uiOthers.uiHelp}',\n`;
+          code += `"ui:help": "${uiSchema.uiOthers.uiHelp}",`;
         if (
           has(uiSchema, "uiOthers.uiPlaceholder") &&
           uiSchema.uiOthers.uiPlaceholder
         )
-          code += `'ui:placeholder': '${uiSchema.uiOthers.uiPlaceholder}',\n`;
+          code += `"ui:placeholder": "${uiSchema.uiOthers.uiPlaceholder}",`;
 
         if (has(uiSchema, "uiWidget.widget") && uiSchema.uiWidget.widget)
-          code += `'ui:widget': '${uiSchema.uiWidget.widget}',\n`;
+          code += `"ui:widget": "${uiSchema.uiWidget.widget}",`;
 
-        if (
-          isEmpty(parent) &&
-          (el.type !== "array" || el.type !== "object") &&
-          el.title
-        )
-          code += `},\n`;
-        if (
-          !isEmpty(parent) &&
-          (parent.type === "array" || parent.type === "object") &&
-          el.title
-        )
-          code += `},\n`;
-        if (
-          (el.type === "array" || el.type === "object") &&
-          isEmpty(el.children) &&
-          el.title
-        )
-          code += `},\n`;
-        //if (!isEmpty(parent) && !isLastChild && el.title) code += `},\n`;
-        if (!isEmpty(parent) && isLastChild && el.title) code += `},\n`;
-        if (isEmpty(parent)) code += `};\n`;
+        if (isChild && parent.type === 'object' && isLastChild && el.title !== 'properties') {
+          if (!isEmpty(el.title)) code += `},`;
+        }
+
+        if (isChild && parent.type === 'array' && el.title !== 'items') {
+          if (!isEmpty(el.title)) code += `},`;
+        }
+
+        if (isChild && parent.type === 'array' && isLastChild && el.title === 'items') {
+          if (!isEmpty(el.title)) code += `],`;
+        }
+
+        if (isChild && parent.type === 'object' && !isLastChild && el.title !== 'properties') {
+          if (!isEmpty(el.title)) code += `},`;
+        }
+
+        if (isEmpty(parent)) code += `}`;
       }
     });
 
     return code;
   };
 
-  return prepareJsonFormCode(tree);
+  return prepareJsonFormUICode(tree);
 };

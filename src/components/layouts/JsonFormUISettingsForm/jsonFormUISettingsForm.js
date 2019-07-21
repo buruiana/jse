@@ -281,6 +281,7 @@ const JsonFormUISettingsForm = props => {
   };
 
   const getButton = (node, path) => {
+    if (node.title === 'properties' || node.title === 'items') return [];
     return [
       <FontAwesomeIcon
         icon={faPlusCircle}

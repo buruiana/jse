@@ -22,12 +22,12 @@ const Preview = props => {
   const onValueChange = () => {
     return null;
   };
-
+  console.log('console: uiSchemaCode', uiSchemaCode);
   return (
     <>
       <Form
         schema={JSON.parse(schemaCode)}
-        //uiSchema={uiSchemaCode}
+        uiSchema={JSON.parse(uiSchemaCode)}
         onChange={onChange}
         onSubmit={onSubmit}
         showErrorList={true}
@@ -55,6 +55,28 @@ const Preview = props => {
           showGutter={true}
           highlightActiveLine={true}
           value={schemaCode}
+          height="750px"
+        />
+      </div>
+      <div className="container_editor_area">
+        <AceEditor
+          mode="json"
+          theme="xcode"
+          onChange={onChange}
+          name="UNIQUE_ID_OF_DIV"
+          editorProps={{ $blockScrolling: true }}
+          setOptions={{
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            enableSnippets: false,
+            showLineNumbers: true,
+            tabSize: 2
+          }}
+          fontSize={12}
+          showPrintMargin={true}
+          showGutter={true}
+          highlightActiveLine={true}
+          value={uiSchemaCode}
           height="750px"
         />
       </div>

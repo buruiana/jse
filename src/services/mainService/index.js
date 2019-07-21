@@ -19,6 +19,7 @@ export function* watchSetJsonForm() {
   const jsonFormSchemaCode = generateJsonSchemaCode({ tree });
   console.log("console: jsonFormSchemaCode", jsonFormSchemaCode);
   const jsonFormUISchemaCode = generateJsonUISchemaCode({ tree });
+  console.log("console: jsonFormUISchemaCode", jsonFormUISchemaCode);
   let prettyJsonFormSchemaCode = '';
 
   try {
@@ -32,15 +33,15 @@ export function* watchSetJsonForm() {
   } catch (e) {
     console.log('console: 11111111111111', e);
   }
-  // const prettyJsonFormUISchemaCode = jsonFormUISchemaCode
-  //   ? yield prettify({
-  //     code: jsonFormUISchemaCode,
-  //     parser
-  //     })
-  //   : '';
-  console.log("console: jsonFormUISchemaCode", jsonFormUISchemaCode.data);
+  const prettyJsonFormUISchemaCode = jsonFormUISchemaCode
+    ? yield prettify({
+      code: jsonFormUISchemaCode,
+      parser
+      })
+    : '';
+  console.log("console: prettyJsonFormUISchemaCode", prettyJsonFormUISchemaCode.data);
   
-  //yield put(setUISchemaCode(prettyJsonFormUISchemaCode));
+  yield put(setUISchemaCode(prettyJsonFormUISchemaCode.data));
 }
 
 export default function* rootSaga() {

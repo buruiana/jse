@@ -66,6 +66,22 @@ const JsonFormSettingsForm = props => {
     console.log("console: -----------");
   };
 
+  const getButtons = ({ node, path }) => {
+    if (node.title === 'properties' || node.title === 'items') return [];
+    return (
+      [
+        <FontAwesomeIcon
+          icon={faMinusCircle}
+          onClick={() => remove(path)}
+        />,
+        <FontAwesomeIcon
+          icon={faArrowCircleRight}
+          onClick={() => setCurrentForm(node, path)}
+        />
+      ]
+    );
+  };
+
   return (
     <>
       <div className="flex">
@@ -98,16 +114,7 @@ const JsonFormSettingsForm = props => {
             shouldCopyOnOutsideDrop={shouldCopyOnOutsideDrop}
             getNodeKey={getNodeKey}
             generateNodeProps={({ node, path }) => ({
-              buttons: [
-                <FontAwesomeIcon
-                  icon={faMinusCircle}
-                  onClick={() => remove(path)}
-                />,
-                <FontAwesomeIcon
-                  icon={faArrowCircleRight}
-                  onClick={() => setCurrentForm(node, path)}
-                />
-              ]
+              buttons: getButtons({ node, path })
             })}
           />
         </div>
