@@ -18,11 +18,11 @@ const Preview = props => {
   const onSubmit = () => {
     return null;
   };
-  //const code = new Function(schemaCode)() || {};
+
   const onValueChange = () => {
     return null;
   };
-  console.log('console: uiSchemaCode', uiSchemaCode);
+
   return (
     <>
       <Form

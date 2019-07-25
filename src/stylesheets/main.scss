@@ -68,7 +68,7 @@ select.form-control[size] {
   right: 100%;
   margin-right: 10px;
   text-align: right;
-  opacity: .3;
+  opacity: 0.3;
   user-select: none;
   counter-increment: line;
   content: counter(line);
@@ -78,11 +78,12 @@ select.form-control[size] {
   outline: 0;
 }
 
-// .container_editor_area {
-//   width: 50%;
-//   margin: 0 auto;
-// }
-
 .flex {
   display: flex;
+}
+
+.rightClose {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }

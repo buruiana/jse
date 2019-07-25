@@ -43,7 +43,13 @@ const JsonFormSettingsForm = props => {
         el.node.subtitle === "Boolean" ||
         el.node.subtitle === "Number";
 
-      return (isPrimitive && !isEmpty(el.node.children)) || jsonForm.length > 1;
+      return (
+        (isPrimitive && !isEmpty(el.node.children)) ||
+        jsonForm.length > 1 ||
+        (isPrimitive &&
+          (el.parentNode.subtitle === "Object" ||
+            el.parentNode.subtitle === "Array"))
+      );
     });
   };
 
@@ -67,19 +73,14 @@ const JsonFormSettingsForm = props => {
   };
 
   const getButtons = ({ node, path }) => {
-    if (node.title === 'properties' || node.title === 'items') return [];
-    return (
-      [
-        <FontAwesomeIcon
-          icon={faMinusCircle}
-          onClick={() => remove(path)}
-        />,
-        <FontAwesomeIcon
-          icon={faArrowCircleRight}
-          onClick={() => setCurrentForm(node, path)}
-        />
-      ]
-    );
+    if (node.title === "properties" || node.title === "items") return [];
+    return [
+      <FontAwesomeIcon icon={faMinusCircle} onClick={() => remove(path)} />,
+      <FontAwesomeIcon
+        icon={faArrowCircleRight}
+        onClick={() => setCurrentForm(node, path)}
+      />
+    ];
   };
 
   return (

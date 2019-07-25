@@ -78,21 +78,13 @@ const JsonFormInfoForm = props => {
         "maxItems",
         "enumVal",
         "enumNames",
-        "uniqueItems",
-        "isRequired"
+        "uniqueItems"
       ];
     }
     if (node.subtitle === "Object") {
-      return ["title", "description", "defaultValue", "isRequired"];
+      return ["title", "description", "defaultValue"];
     }
-    return [
-      "title",
-      "description",
-      "defaultValue",
-      "enumVal",
-      "enumNames",
-      "isRequired"
-    ];
+    return ["title", "description", "defaultValue", "enumVal", "enumNames"];
   };
 
   const schema = {
@@ -113,11 +105,6 @@ const JsonFormInfoForm = props => {
         type: "string",
         title: "default",
         default: ""
-      },
-      isRequired: {
-        type: "boolean",
-        title: "isRequired",
-        default: false
       }
     }
   };
@@ -128,6 +115,17 @@ const JsonFormInfoForm = props => {
     },
     "ui:order": getUIOrder()
   };
+
+  if (node.subtitle !== "Object" && node.subtitle !== "Array") {
+    schema.properties = {
+      ...schema.properties,
+      isRequired: {
+        type: "boolean",
+        title: "isRequired",
+        default: false
+      }
+    };
+  }
 
   if (node.subtitle === "String") {
     schema.properties = {
@@ -270,11 +268,14 @@ const JsonFormInfoForm = props => {
   const log = type => console.log.bind(console, type);
   return (
     <div className="infoform">
-      <FontAwesomeIcon
-        className="componentInfoIcon"
-        icon={faWindowClose}
-        onClick={close}
-      />
+      <div className="rightClose">
+        <FontAwesomeIcon
+          className="componentInfoIcon"
+          icon={faWindowClose}
+          onClick={close}
+        />
+      </div>
+
       <Form
         schema={schema}
         noHtml5Validate={true}
