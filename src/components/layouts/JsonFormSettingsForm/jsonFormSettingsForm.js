@@ -47,6 +47,7 @@ const JsonFormSettingsForm = props => {
         (isPrimitive && !isEmpty(el.node.children)) ||
         jsonForm.length > 1 ||
         (isPrimitive &&
+          !isEmpty(el.parentNode) &&
           (el.parentNode.subtitle === "Object" ||
             el.parentNode.subtitle === "Array"))
       );

@@ -11,7 +11,10 @@ import "brace/mode/jsx";
 import "brace/theme/xcode";
 
 const Preview = props => {
-  const { schemaCode, uiSchemaCode } = props;
+  let { schemaCode, uiSchemaCode } = props;
+  if (isEmpty(schemaCode)) schemaCode = "{}";
+  if (isEmpty(uiSchemaCode)) uiSchemaCode = "{}";
+
   const onChange = () => {
     return null;
   };
