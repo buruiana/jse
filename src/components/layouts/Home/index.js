@@ -6,10 +6,6 @@ const mapStateToProps = state => ({
   currentNode: state.mainReducer.currentNode
 });
 
-// const mapDispatchToProps = {
-//   addModal: modal => addModal(modal)
-// };
-
 export default connect(
   mapStateToProps,
   null

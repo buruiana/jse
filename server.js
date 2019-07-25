@@ -2,7 +2,6 @@ const express = require("express");
 const http = require("http");
 const bodyParser = require("body-parser");
 const prettier = require("prettier");
-const fs = require("fs");
 const cors = require("cors");
 const app = express();
 app.use(cors());
@@ -26,62 +25,14 @@ app.post("/api/prettify", (req, res) => {
     proseWrap: "preserve"
   };
 
-  console.log('console: req.body.code', req.body.code);
-  console.log("console: xxxxx", prettier.format(req.body.code, opt));
-  let formattedCode = '';
+  let formattedCode = "";
   try {
-    console.log('console: 111111111', );
     formattedCode = prettier.format(req.body.code, opt);
-    console.log('console: 22222222', );
   } catch (e) {
-    console.log('console: ===========', e);
+    console.log("console: error", e);
   }
 
   res.json(formattedCode);
-});
-
-app.post("/api/exportFiles", (req, res) => {
-  const name = req.body.name;
-  const techno = req.body.techno;
-  const dest = req.body.destination + `/${name}`;
-  shell.mkdir(dest);
-
-  if (req.body.projectType === "Service") {
-    if (req.body.reducer || req.body.exportAll) {
-      fs.writeFileSync(`${dest}/reducer.js`, req.body.reducer, "utf8");
-    }
-
-    if (req.body.saga || req.body.exportAll) {
-      fs.writeFileSync(`${dest}/index.js`, req.body.saga, "utf8");
-    }
-
-    if (req.body.actions || req.body.exportAll) {
-      fs.writeFileSync(`${dest}/actions.js`, req.body.actions, "utf8");
-    }
-
-    if (req.body.actionTypes || req.body.exportAll) {
-      fs.writeFileSync(`${dest}/actionTypes.js`, req.body.actionTypes, "utf8");
-    }
-  } else {
-    if (req.body.hoc || req.body.exportAll) {
-      fs.writeFileSync(`${dest}/index.js`, req.body.hoc, "utf8");
-    }
-
-    if (req.body.component || req.body.exportAll) {
-      fs.writeFileSync(
-        `${dest}/${name}.js`,
-        req.body.component.replace(/__/g, "."),
-        "utf8"
-      );
-    }
-
-    if (req.body.styles || req.body.exportAll) {
-      const ext = req.body.techno === "React" ? "css" : "js";
-      fs.writeFileSync(`${dest}/styles.${ext}`, req.body.styles, "utf8");
-    }
-  }
-
-  res.json("done");
 });
 
 const port = process.env.PORT || 5000;

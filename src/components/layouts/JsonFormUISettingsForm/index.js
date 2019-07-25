@@ -2,7 +2,6 @@ import JsonFormUISettingsForm from "./jsonFormUISettingsForm";
 import { connect } from "react-redux";
 import {
   setTree,
-  setCurrentNode,
   setCurrentUINode
 } from "../../../services/mainService/actions";
 

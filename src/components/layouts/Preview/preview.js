@@ -1,11 +1,6 @@
 import React from "react";
 import Form from "react-jsonschema-form";
 import isEmpty from "lodash/isEmpty";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMinusCircle,
-  faArrowCircleRight
-} from "@fortawesome/free-solid-svg-icons";
 import AceEditor from "react-ace";
 import "brace/mode/jsx";
 import "brace/theme/xcode";
@@ -58,7 +53,7 @@ const Preview = props => {
           showGutter={true}
           highlightActiveLine={true}
           value={schemaCode}
-          height="750px"
+          height="350px"
         />
       </div>
       <div className="container_editor_area">
@@ -80,7 +75,7 @@ const Preview = props => {
           showGutter={true}
           highlightActiveLine={true}
           value={uiSchemaCode}
-          height="750px"
+          height="350px"
         />
       </div>
     </>

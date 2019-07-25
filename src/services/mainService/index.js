@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select } from "redux-saga/effects";
+import { put, takeLatest, select } from "redux-saga/effects";
 import axios from "axios";
 import { SET_TREE } from "./actionTypes";
 import { generateJsonSchemaCode } from "./helpers/jsonSchema";
@@ -20,27 +20,27 @@ export function* watchSetJsonForm() {
   console.log("console: jsonFormSchemaCode", jsonFormSchemaCode);
   const jsonFormUISchemaCode = generateJsonUISchemaCode({ tree });
   console.log("console: jsonFormUISchemaCode", jsonFormUISchemaCode);
-  let prettyJsonFormSchemaCode = '';
+  let prettyJsonFormSchemaCode = "";
 
   try {
     prettyJsonFormSchemaCode = jsonFormSchemaCode
       ? yield prettify({
-        code: jsonFormSchemaCode,
-        parser
-      })
-      : '';
+          code: jsonFormSchemaCode,
+          parser
+        })
+      : "";
     yield put(setSchemaCode(prettyJsonFormSchemaCode.data));
   } catch (e) {
-    console.log('console: 11111111111111', e);
+    console.log("console: error", e);
   }
+
   const prettyJsonFormUISchemaCode = jsonFormUISchemaCode
     ? yield prettify({
-      code: jsonFormUISchemaCode,
-      parser
+        code: jsonFormUISchemaCode,
+        parser
       })
-    : '';
-  console.log("console: prettyJsonFormUISchemaCode", prettyJsonFormUISchemaCode.data);
-  
+    : "";
+
   yield put(setUISchemaCode(prettyJsonFormUISchemaCode.data));
 }
 

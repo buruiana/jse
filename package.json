@@ -1,7 +1,7 @@
 {
-  "name": "name",
+  "name": "jsonschema-visual-editor",
   "version": "1.0.0",
-  "description": "",
+  "description": "visual editor for jsonschema",
   "main": "src/app/index.js",
   "scripts": {
     "test": "",
